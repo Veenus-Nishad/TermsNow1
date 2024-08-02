@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -64,9 +67,7 @@ fun AppBottomBar(modifier: Modifier){
     val selected= remember {
         mutableStateOf(Icons.Default.Explore)
     }
-    var text by remember { mutableStateOf("") } /* For entries*/
-    var active by remember { mutableStateOf(false) }
-    var history = remember { mutableStateListOf("") }
+
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -81,11 +82,19 @@ fun AppBottomBar(modifier: Modifier){
                         }
                     },modifier=Modifier.weight(1f)
                 ) {
-                    Icon(
-                        Icons.Default.Explore,
-                        contentDescription = "Explore Button",
-                        modifier=Modifier.size(26.dp) ,
-                        tint=if(selected.value == Icons.Default.Explore) Color.Black else Color.Gray)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                        Icon(
+                            Icons.Default.Explore,
+                            contentDescription = "Explore Button",
+                            modifier=Modifier.size(26.dp) ,
+                            tint=if(selected.value == Icons.Default.Explore) Color.Black else Color.Gray
+                        )
+                        Text(text = "Explore")
+
+                    }
+
                 }
                 IconButton( /*Installed Apps*/
                     onClick = {
@@ -96,24 +105,50 @@ fun AppBottomBar(modifier: Modifier){
                         }
                     },modifier=Modifier.weight(1f)
                 ) {
-                    Icon(
-                        Icons.Default.Apps,
-                        contentDescription = "Installed Apps Button",
-                        modifier=Modifier.size(26.dp) ,
-                        tint=if(selected.value == Icons.Default.Apps) Color.Black else Color.Gray)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            Icons.Default.Apps,
+                            contentDescription = "Installed Apps Button",
+                            modifier=Modifier.size(26.dp) ,
+                            tint=if(selected.value == Icons.Default.Apps) Color.Black else Color.Gray
+                        )
+                        Text(text = "Installed Apps")
+                    }
+
                 }
             }
         }
     ) {paddingValues->
 
         Column(modifier=Modifier.padding(paddingValues)) {
+            Row(horizontalArrangement = Arrangement.Center,modifier=Modifier.fillMaxWidth()){
+                AppSearchBar(modifier=Modifier.weight(.5f))
+            }
+            NavHost(
+                navController=navigationController,
+                startDestination = Screens.Explore.screen,
+
+                ){
+                composable(Screens.Explore.screen){ Explore() }
+                composable(Screens.InstalledApps.screen){ InstalledApps()}
+            }
+        }
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppSearchBar(modifier:Modifier){
+    var text by remember { mutableStateOf("") } /* For entries*/
+    var active by remember { mutableStateOf(false) }
+    var history = remember { mutableStateListOf("") }
+        Row(
+            horizontalArrangement = Arrangement.Center){
             SearchBar(
-                modifier= Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues),
                 query = text,
                 onQueryChange = {text=it
-                }, /*updtaes text*/
+                }, /*updates text*/
                 onSearch = { /* Search Button Dabane pe Kya hoga */
                     history.add(text)
                     active=false
@@ -150,7 +185,7 @@ fun AppBottomBar(modifier: Modifier){
             ) {
                 history.forEach {
                     if (history.isNotEmpty()){
-                        Row(modifier=Modifier.padding(all=14.dp)){
+                        Row(modifier=Modifier.padding(all=10.dp)){
                             Icon(
                                 modifier=Modifier.padding(end=10.dp),
                                 imageVector = Icons.Default.History ,
@@ -159,15 +194,7 @@ fun AppBottomBar(modifier: Modifier){
                     }
                 }
             }
-            NavHost(
-                navController=navigationController,
-                startDestination = Screens.Explore.screen,
-
-                ){
-                composable(Screens.Explore.screen){ Explore() }
-                composable(Screens.InstalledApps.screen){ InstalledApps()}
-            }
         }
 
-    }
+
 }
