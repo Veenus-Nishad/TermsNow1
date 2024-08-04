@@ -32,18 +32,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.termsnow.screen.Explore
+import com.example.termsnow.screen.InstalledApps
 import com.example.termsnow.ui.theme.TermsNowTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -130,7 +131,7 @@ fun AppBottomBar(modifier: Modifier){
 
                 ){
                 composable(Screens.Explore.screen){ Explore() }
-                composable(Screens.InstalledApps.screen){ InstalledApps()}
+                composable(Screens.InstalledApps.screen){ InstalledApps() }
             }
         }
 

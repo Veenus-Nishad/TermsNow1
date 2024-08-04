@@ -1,4 +1,4 @@
-package com.example.termsnow
+package com.example.termsnow.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -29,17 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-@Preview(showSystemUi = true)
 @Composable
-fun ShowPreview(){
-    Column() {
-        getServiceList().map{item->
-            DetailsCard(appName = item.appName, appIcon =item.img )
-        }
-    }
-}
-@Composable
-fun DetailsCard(appName:String,appIcon:Int){
+fun DetailsCard(appName:String){
     Card(
         modifier= Modifier
             .fillMaxWidth()
@@ -57,7 +48,7 @@ fun DetailsCard(appName:String,appIcon:Int){
                         .size(135.dp)
                         .padding(start = 12.dp, top = 12.dp)){
                         Image(
-                            painter = painterResource(id = appIcon),
+                            painter = painterResource(id = R.drawable.proxyimage),
                             contentDescription = "Service Logo",
                         )
                     }
